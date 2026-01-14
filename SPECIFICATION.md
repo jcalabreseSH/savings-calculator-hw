@@ -1,464 +1,248 @@
-# Hardware Savings Calculator – Product & Technical Specification
+# Sighthound Hardware Savings Calculator – Specification
 
-## 1. Purpose
+## 1. Project Summary
 
-Provide a simple, public-facing web calculator that compares hardware capital costs between:
+A static, single-page marketing site for Sighthound’s edge AI hardware, featuring an **interactive savings calculator** that models one-time hardware costs for:
 
-1. Buying smart / Edge AI cameras for every location, vs.  
-2. Using Sighthound Compute Nodes with standard IP cameras.
+- **Compute nodes** (GPU-ready edge compute)
+- **Cameras** (smart security cameras)
 
-The tool is used in sales conversations, demos, and follow-ups to make Sighthound’s hardware economics clear, honest, and easy to explain without deep product knowledge.
+All markup, styles, and behavior live directly in `index.html` with a small amount of inline JavaScript. There is **no backend** and no build pipeline; the page is served as plain HTML/CSS/JS.
+
+This specification documents the **current behavior** of the existing `index.html` experience. It does **not** introduce a new version or roadmap of changes.
 
 ## 2. Scope
 
-- **In scope**
-  - Single-page, static web app running entirely in the browser.
-  - Inputs for camera count and two price points (smart vs standard IP).
-  - Toggle for “we already have standard IP cameras installed”.
-  - URL-based state sharing (camera count and prices).
-  - Reset behavior that returns the calculator to a neutral, documented baseline.
-  - Honest representation of both positive **and negative** savings.
-  - A small, optional software section that compares monthly software spend.
+### 2.1 In Scope
 
-- **Out of scope**
-  - Any non-hardware costs beyond the simple optional monthly software comparison (full SaaS bundles, detailed licensing, cloud, bandwidth, storage, retention, labor, install, operations).
-  - End-to-end TCO/ROI modeling.
-  - Authentication, permissions, or backend services.
-  - Heavy JS frameworks or build pipelines.
+- A single HTML page (`index.html`) containing:
+  - Hero section with marketing copy and a live estimate preview.
+  - Pricing spotlight for compute nodes and cameras.
+  - Bulk discount explainer.
+  - Interactive calculator widget (quantities, line items, discounts, receipt summary).
+  - Features section.
+  - FAQ section.
+  - Final call-to-action.
+- Client-side calculator logic implemented via inline `<script>`:
+  - Read and sanitize quantities for compute nodes and cameras.
+  - Apply hard-coded unit prices and bulk-discount rules.
+  - Compute and display per-line and overall totals and savings.
+  - Keep hero preview and receipt summary in sync.
+- JSON-LD metadata for SEO.
 
-## 3. Users & Use Cases
+### 2.2 Out of Scope
 
-### 3.1 Primary users
+- Any backend service or API.
+- Authentication, user accounts, or persistence of scenarios.
+- Multi-page flows, wizards, or dashboards.
+- Support for additional product SKUs beyond the existing **Compute Node** and **Camera**.
+- New pricing logic beyond what is currently implemented.
 
-- Prospects and customers evaluating Sighthound hardware.
-- Channel partners needing a simple explanation of edge compute economics.
-- Sighthound sales and SEs for live demos and follow-up emails.
+## 3. Functional Specification – Calculator
 
-### 3.2 Core use cases
+### 3.1 Inputs
 
-1. **Quick comparison in a meeting**
-   - Sales enters approximate camera count and typical hardware prices.
-   - Shows “today vs. with Sighthound” costs side-by-side.
-   - Optionally opens breakdown to answer “how did you get these numbers?”.
+The calculator exposes two numeric inputs:
 
-2. **Email follow-up / shared link**
-   - Sales configures a scenario.
-   - Copies URL (with query params) to send in email.
-   - Recipient opens link and sees pre-filled inputs and results.
+- **Compute nodes quantity**
+  - Element: `input#qty-compute[type="number"]`
+  - Allowed range: `0`–`999` (inclusive)
+  - Default value: `0`
+- **Cameras quantity**
+  - Element: `input#qty-camera[type="number"]`
+  - Allowed range: `0`–`999` (inclusive)
+  - Default value: `0`
 
-3. **Scenario exploration by a prospect**
-   - Prospect modifies camera count and prices to match their environment.
-   - Uses existing camera toggle to model reuse vs. full refresh.
-   - Checks whether Sighthound is cheaper or more expensive in their case.
+Input methods supported:
 
-## 4. Functional Requirements
+- Direct typing into each `<input type="number">`.
+- Plus/Minus **stepper buttons** (`.qty-btn`) with `data-target` and `data-step` attributes.
+- Keyboard shortcuts when an input is focused:
+  - `ArrowUp` or `+` → increment by 1.
+  - `ArrowDown` or `-` → decrement by 1.
 
-### 4.1 Inputs
+### 3.2 Pricing Model
 
-- **Camera count**
-  - Field: integer `totalCameras`.
-  - Constraints: must be a whole number between 1 and 10,000.
-  - UX: numeric input; invalid/non-numeric should be handled gracefully (e.g., treated as empty).
+Hard-coded constants (inline script):
 
-- **Smart AI camera price**
-  - Field: `smartCameraCost`.
-  - Type: currency / number input.
-  - Default: defined constant in code (value must align with README/UX copy).
-  - Persisted in the URL when changed.
+- `UNIT_COMPUTE = 2000` (USD)
+- `UNIT_CAMERA = 2500` (USD)
+- `DISCOUNT_RATE = 0.05` (5%)
+- `DISCOUNT_THRESHOLD = 5`
 
-- **Standard IP camera price**
-  - Field: `dumbCameraCost`.
-  - Type: currency / number input.
-  - Default: defined constant in code.
-  - Persisted in the URL when changed.
+**Bulk discount rule:**
 
-- **Current software cost per camera per month (optional)**
-  - Field: `currentSoftwareCostPerCamera`.
-  - Type: currency / number input.
-  - Default: empty (ignored when blank).
-  - Not persisted in the URL (local, rough comparison only).
+- For each **line item** (compute or camera) independently:
+  - If `quantity > DISCOUNT_THRESHOLD` (i.e., `>= 6` units), apply a **5% discount** to that line’s subtotal.
+  - Otherwise, discount for that line is `0`.
 
-- **Existing cameras toggle**
-  - Label: “We already have standard IP cameras installed in this system.”
-  - Field: boolean `existingCameras`.
-  - Behavior:
-    - When checked, Sighthound side assumes **zero** new camera hardware cost.
-    - Still requires Compute Nodes based on camera count.
-    - Affects formula for `sighthoundTotal` (see below), **but does not change node capacity or price**.
+### 3.3 Computation Flow (`syncTotals`)
 
-- **Optional “share details” / CTA-related checkbox**
-  - Boolean controlling inclusion of extra context in shared links/emails.
-  - Exact behavior determined by existing implementation; requirement: keep it explicit and opt-in.
+On each relevant user interaction (button click, input change, blur, keydown), `syncTotals()` recomputes all derived values.
 
-### 4.2 Calculations
+#### 3.3.1 Quantity Sanitization
 
-All core formulas must remain simple, transparent, and centralized in pure JS functions with test coverage.
+A helper `clampQty(value)` ensures inputs are in the valid range:
 
-Given:
+- Parse the string as base-10 integer.
+- If `NaN` or `< 0` → return `0`.
+- If `> 999` → return `999`.
+- Otherwise → return the parsed integer.
 
-- `totalCameras` – number of camera channels.
-- `smartCameraCost` – price per smart/AI camera.
-- `dumbCameraCost` – price per standard IP camera.
-- `CAMERAS_PER_NODE = 4`.
-- `NODE_COST = 3500`.
+`syncTotals()`:
 
-The app computes:
+1. Reads raw `.value` from `qty-compute` and `qty-camera`.
+2. Clamps them via `clampQty`.
+3. Writes the clamped values back to the inputs if they changed.
 
-1. **Compute Nodes required**
+#### 3.3.2 Line-Level Calculations
 
-   ```
-   nodesNeeded = ceil(totalCameras / CAMERAS_PER_NODE)
-   ```
+For compute nodes:
 
-   - Use `ceil`, not rounding or floor.
-   - `0` cameras → `0` nodes, if allowed by current implementation (must match tests).
+- `computeSubtotal = qtyCompute * UNIT_COMPUTE`
+- `computeDiscount = (qtyCompute > DISCOUNT_THRESHOLD) ? (computeSubtotal * DISCOUNT_RATE) : 0`
+- `computeTotal = computeSubtotal - computeDiscount`
 
-2. **Current (smart camera) total cost**
+For cameras:
 
-   ```
-   currentTotal = totalCameras × smartCameraCost
-   ```
+- `cameraSubtotal = qtyCamera * UNIT_CAMERA`
+- `cameraDiscount = (qtyCamera > DISCOUNT_THRESHOLD) ? (cameraSubtotal * DISCOUNT_RATE) : 0`
+- `cameraTotal = cameraSubtotal - cameraDiscount`
 
-3. **Sighthound total hardware cost**
+#### 3.3.3 Aggregate Calculations
 
-   - If **no existing cameras**:
+- `subtotal = computeSubtotal + cameraSubtotal`
+- `totalDiscount = computeDiscount + cameraDiscount`
+- `finalTotal = subtotal - totalDiscount`
 
-     ```
-     sighthoundCameraHardwareTotal = totalCameras × dumbCameraCost
-     ```
+“Savings” is presented as **`totalDiscount`**.
 
-   - If **existing cameras**:
+### 3.4 UI Updates
 
-     ```
-     sighthoundCameraHardwareTotal = 0
-     ```
+All currency values are represented as numeric `data-value` attributes and rendered using `Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })`.
 
-   - Combined:
+#### 3.4.1 Per-Line UI
 
-     ```
-     sighthoundTotal = nodesNeeded × NODE_COST + sighthoundCameraHardwareTotal
-     ```
+For **compute**:
 
-4. **Savings (can be negative)**
+- Subtotal: `#compute-subtotal`
+- Discount: `#compute-discount` (shown as negative value)
+- Line total: `#compute-total`
+- Badge: `#bulk-badge-compute` (class `active` when discount > 0)
+- Discount note: `#compute-discount-note` (class `active` when discount > 0)
 
-   ```
-   savings = currentTotal − sighthoundTotal
-   ```
+For **cameras**:
 
-5. **Percent reduction**
+- Subtotal: `#camera-subtotal`
+- Discount: `#camera-discount` (shown as negative value)
+- Line total: `#camera-total`
+- Badge: `#bulk-badge-camera` (class `active` when discount > 0)
+- Discount note: `#camera-discount-note` (class `active` when discount > 0)
 
-   ```
-   percentReduction = (savings / currentTotal) × 100
-   ```
+#### 3.4.2 Summary Receipt UI
 
-   - Edge cases (e.g., `currentTotal = 0`) must be handled explicitly to avoid `NaN`/`Infinity`.
+Receipt section elements:
 
-6. **Cost per camera**
+- Subtotal before discounts: `#summary-subtotal`
+- Total discount: `#summary-discount` (negative value)
+- Final total: `#summary-total`
+- Savings (“You save”): `#summary-save`
 
-   ```
-   costPerCameraBefore = currentTotal / totalCameras
-   costPerCameraAfter  = sighthoundTotal / totalCameras
-   ```
+Visual state:
 
-   - Edge case: `totalCameras = 0` must not produce `NaN` or crash; define behavior (e.g., show `–` or omit metrics) and keep code/tests consistent.
+- Container `#summary-subtotal-row` toggles class `subtotal-strike` when `totalDiscount > 0`.
 
-### 4.3 Display Logic
+#### 3.4.3 Hero Preview UI
 
-- **Costs comparison card**
-  - Shows:
-    - “Today” (smart camera approach) total cost.
-    - “With Sighthound” total cost.
-  - Must be the **first** result card in the right column.
+Hero card mirrors summary values:
 
-- **Savings card**
-  - Title and styling depend on sign of `savings`:
-    - `savings > 0`: label as “Savings vs today”, positive color (e.g., green).
-    - `savings < 0`: label as “Extra cost vs today”, negative color (e.g., red).
-    - `savings = 0`: neutral representation (e.g., “No difference vs today”).
-  - Shows magnitude of `savings` and `percentReduction`.
+- Subtotal: `#hero-subtotal`
+- Discount: `#hero-discount`
+- Total: `#hero-total`
+- Savings: `#hero-save`
 
-- **Deployment details card**
-  - Shows:
-    - `nodesNeeded`.
-    - `percentReduction`.
-    - `costPerCameraBefore` and `costPerCameraAfter`.
-  - Copy emphasizes assumptions (hardware-only, no SaaS, etc.) and reuse of cameras when toggle is on.
+Behavior:
 
-- **CTA / follow-up card**
-  - Provides links to contact Sighthound or email support.
-  - May depend on “share details” checkbox.
-  - Must be the **last** card.
+- The element containing `#hero-subtotal` toggles class `subtotal-strike` when `totalDiscount > 0`.
 
-### 4.4 Optional software monthly comparison
+### 3.5 Animation & Formatting
 
-- **Fixed Sighthound assumption**
-  - `SIGHTHOUND_SOFTWARE_COST_PER_CAMERA = 30` (USD per camera per month).
+A helper `animateValue(el, newValue)`:
 
-- **User-provided value**
-  - `currentSoftwareCostPerCamera` – visitor’s own software spend per camera per month.
+- Reads previous numeric value from `el.dataset.value` (default `0`).
+- If unchanged, directly formats and sets the currency text.
+- Otherwise, runs a short (≈180 ms) `requestAnimationFrame` loop:
+  - Computes eased interpolation (`easeOutQuad`) between old and new values.
+  - Updates `textContent` with formatted currency each frame.
+  - At the end, sets:
+    - `el.textContent` to final formatted value.
+    - `el.dataset.value = String(newValue)`.
+    - Removes CSS class `updated`.
+- Before animating, applies CSS class `updated` to the element.
 
-- **Derived values (monthly)**
-  - `softwareCurrentMonthly = totalCameras × currentSoftwareCostPerCamera`.
-  - `softwareSighthoundMonthly = totalCameras × SIGHTHOUND_SOFTWARE_COST_PER_CAMERA`.
-  - `softwareDeltaMonthly = softwareCurrentMonthly − softwareSighthoundMonthly`.
+Wrapper `updateNumber(el, value)` simply calls `animateValue` when the element exists.
 
-- **Display rules**
-  - Only show numeric values when `currentSoftwareCostPerCamera` is provided and valid (≥ 0).
-  - Show:
-    - “Your software per month: …”
-    - “Estimated Sighthound software per month: …”
-    - “Monthly software difference: … (savings / extra cost)”
-  - These values **do not affect** the main hardware totals or savings card.
+### 3.6 Initialization
 
-### 4.5 Breakdown Toggle
+On `DOMContentLoaded`:
 
-- **Collapsed by default**.
-- Label: “Show breakdown” / “Hide breakdown”.
-- When expanded:
-  - Show the math for both sides:
+1. `initNumberDefaults()`
+   - For all `.number-animate` elements:
+     - Ensure `el.dataset.value` is set (default "0").
+     - Set `textContent` to the formatted currency for `Number(el.dataset.value)`.
+2. `attachQtyControls()`
+   - Attaches click handlers to all `.qty-btn` elements.
+   - Attaches `input`, `blur`, and `keydown` handlers to `#qty-compute` and `#qty-camera`.
+3. `syncTotals()`
+   - Runs once to ensure visible UI matches initial state.
 
-    - **Smart cameras**:
-      - `totalCameras × smartCameraCost = currentTotal`.
+## 4. Non-Functional Requirements
 
-    - **Sighthound**:
-      - `nodesNeeded × NODE_COST`.
-      - `+ totalCameras × dumbCameraCost` when not reusing cameras, with explicit text.
-      - Or an explicit note that existing standard IP cameras are reused and no new camera hardware is purchased.
+### 4.1 Performance
 
-- Purpose: allow skeptical or technical users to verify numbers without cluttering the default view.
+- All logic runs client-side with lightweight, inline JavaScript.
+- No external JS dependencies or bundlers.
+- Calculator updates should feel instantaneous on modern browsers.
 
-### 4.5 URL State & Reset
+### 4.2 Accessibility
 
-- **URL state**
-  - Camera count and both price inputs must be encoded in query parameters.
-  - Opening a URL with parameters pre-fills inputs and immediately shows consistent results.
-  - Extending state to additional options (e.g., existing cameras toggle) is allowed, but must be done in a backward-compatible way (old URLs still behave sensibly).
+- Use semantic HTML sections (`<section>`, `<aside>`, `<header>`, `<main>`).
+- Provide ARIA labels for regions (e.g., calculator, receipt summary).
+- Use `aria-live="polite"` on dynamic savings areas for screen readers.
+- Preserve or enhance:
+  - Skip link to the calculator.
+  - Screen-reader-only text where present (e.g., `sr-only` classes).
 
-- **Reset behavior**
-  - “Reset calculations” button:
-    - Clears camera count.
-    - Resets prices to documented defaults.
-    - Unchecks existing cameras and “share details” checkboxes.
-    - Clears **all** calculator-related query parameters from the URL.
-  - After reset, the app must be in a known, documented baseline state suitable for first-time users.
+### 4.3 Browser Support
 
-## 5. UX & Layout Requirements
+- Modern evergreen desktop and mobile browsers.
+- Relies on `Intl.NumberFormat` and `requestAnimationFrame`.
+- No requirement to support legacy browsers without these APIs.
 
-- **Layout**
-  - On large screens:
-    - Two-column layout:
-      - Left: inputs.
-      - Right: results.
-    - Inputs should stay above the fold with results visible in typical demo setups.
-  - On small screens:
-    - Stack vertically, but **DOM order remains inputs then results**.
+## 5. Implementation Notes
 
-- **Result card ordering**
-  1. Costs comparison.
-  2. Savings card.
-  3. Deployment details.
-  4. CTA / follow-up.
+- All behavior stays contained in a self-invoking function in an inline `<script>` tag at the bottom of `index.html`.
+- Any future refactors (if desired) could split JavaScript into a separate `.js` file, but that is **not** part of this specification.
+- Pricing constants and discount rules are currently hard-coded and must be updated directly in the script if business rules change.
 
-- **Copy tone**
-  - Clear, literal, and customer-safe.
-  - Avoid marketing fluff; emphasize assumptions and clarity.
-  - Explain that this is **hardware-only** and a **pre-sales estimation** tool.
+## 6. Testing Expectations (High-Level)
 
-- **Color & sign handling**
-  - Positive savings: visually positive, but not exaggerated.
-  - Negative savings: clearly labeled as “Extra cost vs today” with appropriate cautionary styling.
-  - Avoid any design that could mislead users into thinking a negative result is positive.
+Although no automated test tooling is currently configured, the following behaviors should be manually validated when making changes:
 
-## 6. Non-Functional Requirements
+1. **Quantity handling**
+   - Typing values, using +/- buttons, and arrow keys all update totals correctly.
+   - Values are clamped between 0 and 999; negative, non-numeric, or extreme values are normalized.
 
-- **Tech stack**
-  - Single `index.html` with Tailwind CSS via CDN and minimal custom CSS.
-  - Plain browser JavaScript in `script.js`.
-  - Unit tests in `script.test.js` using Node’s built-in `node:test`.
-  - No front-end frameworks (React/Vue/etc.) and **no build step**.
+2. **Discount activation**
+   - When either line exceeds 5 units, that line gets a 5% discount and the corresponding bulk badge and discount note become active.
+   - When quantities drop back to 5 or below, discounts and badges deactivate.
 
-- **Performance**
-  - Fast initial load over typical network conditions (small static assets only).
-  - All interactions should feel instant for typical input sizes.
+3. **Summary & hero sync**
+   - Receipt and hero preview always match the per-line calculations.
+   - Subtotal rows strike-through only when there is a non-zero discount.
 
-- **Hosting**
-  - Must work on any static host and via direct `file://` open in a modern browser.
-  - No backend server assumptions.
+4. **Animation & formatting**
+   - All currency fields display properly formatted USD values.
+   - Quick successive changes (rapid clicking or typing) do not lead to NaN, Infinity, or obviously incorrect values.
 
-- **Testability**
-  - All core calculation functions must be pure and test-covered.
-  - Changing formulas or assumptions requires updating tests and this specification (plus README) to keep everything in sync.
-
-## 7. Constraints & Assumptions
-
-- `CAMERAS_PER_NODE = 4` and `NODE_COST = 3500` are **business-critical constants**:
-  - Change only when product capacity or pricing changes.
-  - Any change must be reflected in:
-    - Code constants.
-    - Tests.
-    - README and this specification.
-
-- The calculator will be used live in sales demos:
-  - Small changes in copy or layout can affect perceived value.
-  - Favor transparency and conservatism in assumptions.
-
-## 8. Future Extensions (Non-goals for Now)
-
-- Preset scenario buttons (e.g., “retail store”, “warehouse”) that pre-fill form via URL or scripted helpers.
-- Richer breakdown (e.g., multi-site deployments).
-- Integration with more complete TCO/ROI tools that include non-hardware costs.
-- Optional localization of currency formatting and text.
-
----
-
-## 9. Implementation Plan
-
-This section breaks the work into phases, subphases, and tasks so multiple contributors can work in parallel. It is a **plan only**; no code is included.
-
-### Phase 0 – Discovery & Alignment
-
-**Goal:** Confirm current behavior, align README, SPECIFICATION, and implementation.
-
-- **Task 0.1 – Inventory existing implementation**
-  - Review `index.html`, `script.js`, `script.test.js`, and any CSS.
-  - Confirm current inputs, layout, and calculation behavior.
-  - Document any deviations from this SPEC.
-
-- **Task 0.2 – Align documentation**
-  - Ensure README and SPECIFICATION describe the same assumptions and formulas.
-  - Note any open questions or ambiguous behaviors (e.g., handling of 0 cameras).
-
-**Dependencies:** None.
-
-### Phase 1 – Core Calculation Logic
-
-**Goal:** Ensure all math is centralized, pure, and fully tested.
-
-#### 1.1 Calculation Module
-
-- **Task 1.1.1 – Define pure calculation functions**
-  - Implement or refactor functions such as `computeNodesNeeded`, `computeTotals`, `computeSavings`, `computePercentReduction`, `computeCostPerCamera`.
-  - Inputs: `totalCameras`, `smartCameraCost`, `dumbCameraCost`, `existingCameras`, constants.
-  - Outputs: structured result object used by UI.
-
-- **Task 1.1.2 – Edge case handling**
-  - Explicitly define behavior for:
-    - `totalCameras = 0`.
-    - `smartCameraCost = 0` or `dumbCameraCost = 0`.
-    - `currentTotal = 0` when computing percent.
-  - Make sure functions never return `NaN` or `Infinity` to the UI.
-
-#### 1.2 Unit Tests
-
-- **Task 1.2.1 – Baseline test coverage**
-  - Add tests for typical scenarios (small, medium, large camera counts; with and without existing cameras).
-  - Verify node count, totals, savings, percent, and per-camera cost.
-
-- **Task 1.2.2 – Edge case tests**
-  - Test 0 cameras, extreme but reasonable price values.
-  - Test both positive and negative savings paths and 0 savings.
-
-**Dependencies:** Phase 0.
-
-### Phase 2 – UI & Layout
-
-**Goal:** Match required layout, ordering, and UX behavior.
-
-#### 2.1 Input Panel (Left Column)
-
-- **Task 2.1.1 – Input fields**
-  - Ensure camera count and price inputs exist with proper labels, placeholders, and validation messaging.
-
-- **Task 2.1.2 – Toggles and checkboxes**
-  - Implement/verify existing cameras toggle behavior.
-  - Implement/verify “share details” checkbox behavior.
-
-#### 2.2 Results Panel (Right Column)
-
-- **Task 2.2.1 – Card ordering**
-  - Ensure the following order: costs comparison, savings card, deployment details, CTA.
-
-- **Task 2.2.2 – Styling for savings vs extra cost**
-  - Implement styling that clearly distinguishes positive vs negative savings.
-  - Implement neutral styling for 0 savings case.
-
-- **Task 2.2.3 – Deployment details content**
-  - Ensure nodes required, percent reduction, and cost per camera are clearly labeled.
-
-#### 2.3 Responsive Layout
-
-- **Task 2.3.1 – Large screen layout**
-  - Ensure two-column layout is used on larger viewports.
-
-- **Task 2.3.2 – Small screen layout**
-  - Stack vertically while keeping DOM order and tab order logical.
-
-**Dependencies:** Phase 1 (for calculation outputs).
-
-### Phase 3 – Breakdown & Transparency Features
-
-**Goal:** Provide clear, optional breakdown of the math.
-
-#### 3.1 Breakdown Toggle
-
-- **Task 3.1.1 – Toggle UI**
-  - Ensure a collapsed-by-default “Show breakdown” control exists.
-
-- **Task 3.1.2 – Detailed math view**
-  - Implement view that shows:
-    - Smart side formula and result.
-    - Sighthound side node cost and camera cost (or reuse note).
-
-#### 3.2 Copy & Explanations
-
-- **Task 3.2.1 – Assumptions copy**
-  - Add or refine explanatory text about assumptions (hardware-only, constants, no SaaS, etc.).
-
-**Dependencies:** Phase 1 and 2.
-
-### Phase 4 – URL State & Reset Behavior
-
-**Goal:** Ensure state is shareable via URL and reset returns to baseline.
-
-#### 4.1 URL Query Parameters
-
-- **Task 4.1.1 – Encode inputs into URL**
-  - On change of camera count or prices, update URL query params without full page reload.
-
-- **Task 4.1.2 – Initialize from URL**
-  - On page load, read URL parameters and pre-fill inputs, then compute results.
-
-#### 4.2 Reset Logic
-
-- **Task 4.2.1 – Implement reset button behavior**
-  - Clear inputs and toggle states to defaults.
-  - Remove calculator-related query parameters from URL.
-
-- **Task 4.2.2 – Verify behavior from all states**
-  - Test reset after loading from a URL.
-  - Test reset after multiple input changes.
-
-**Dependencies:** Phase 1 and 2.
-
-### Phase 5 – QA, Docs, and Polish
-
-**Goal:** Final verification and alignment.
-
-#### 5.1 QA & Cross-browser Testing
-
-- **Task 5.1.1 – Functional QA**
-  - Test across typical scenarios and edge cases.
-  - Confirm no JS errors in console.
-
-- **Task 5.1.2 – Cross-browser QA**
-  - Test on modern versions of Chrome, Edge, Safari, Firefox.
-
-#### 5.2 Documentation
-
-- **Task 5.2.1 – README alignment**
-  - Ensure README matches final behavior and constants.
-
-- **Task 5.2.2 – SPEC maintenance notes**
-  - Add note: any change to formulas, constants, or assumptions must update SPEC, README, tests, and implementation together.
-
-**Dependencies:** All earlier phases.
+This specification captures the **current intended behavior** of the existing `index.html` page without proposing any redesign or new feature work.

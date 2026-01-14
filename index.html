@@ -174,7 +174,7 @@
                   <div>
                     <h3 class="calc-title">Configure your hardware mix</h3>
                     <p class="calc-subtitle">
-                      Use the steppers or type a quantity between 0&ndash;999. When a product crosses 5 units, a bulk discount is applied and clearly labeled.
+                      Use the steppers or type a quantity between 0&ndash;999. Well suggest the right number of compute nodes based on your camera counts.
                     </p>
                   </div>
                   <div class="calc-chip">
@@ -185,33 +185,145 @@
                 <div class="calc-grid" role="group" aria-labelledby="line-items-heading">
                   <span id="line-items-heading" class="sr-only" aria-hidden="true" hidden>Line item configuration</span>
 
+                  <!-- Standard IP Cameras -->
+                  <div class="calc-row">
+                    <div class="calc-row-main">
+                      <div class="calc-row-label">Standard IP Camera</div>
+                      <div class="calc-row-note">
+                        $250 each &middot; fixed lens, basic IP connectivity.
+                      </div>
+                    </div>
+
+                    <div>
+                      <label for="qty-standard" class="sr-only">Quantity of standard IP cameras</label>
+                      <div class="qty-wrapper">
+                        <button
+                          type="button"
+                          class="qty-btn"
+                          data-target="standard"
+                          data-step="-1"
+                          aria-label="Decrease standard camera quantity"
+                        >
+                          &minus;
+                        </button>
+                        <input
+                          id="qty-standard"
+                          class="qty-input"
+                          type="number"
+                          min="0"
+                          max="999"
+                          step="1"
+                          value="0"
+                          inputmode="numeric"
+                          aria-describedby="qty-standard-desc"
+                        />
+                        <button
+                          type="button"
+                          class="qty-btn"
+                          data-target="standard"
+                          data-step="1"
+                          aria-label="Increase standard camera quantity"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <div id="qty-standard-desc" class="calc-row-note">
+                        Use arrow keys or +/- buttons.
+                      </div>
+                    </div>
+
+                    <div class="calc-row-summary">
+                      <div class="line-price-row">
+                        <span class="line-label">Line total</span>
+                        <span id="standard-total" class="line-value number-animate" data-value="0">$0.00</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Smart Cameras -->
+                  <div class="calc-row">
+                    <div class="calc-row-main">
+                      <div class="calc-row-label">
+                        Smart Camera
+                        <span class="badge-pill badge-pill-recommended">Smart (Recommended)</span>
+                      </div>
+                      <div class="calc-row-note">
+                        $3,000 each &middot; AI-ready, premium edge camera.
+                      </div>
+                    </div>
+
+                    <div>
+                      <label for="qty-smart" class="sr-only">Quantity of smart cameras</label>
+                      <div class="qty-wrapper">
+                        <button
+                          type="button"
+                          class="qty-btn"
+                          data-target="smart"
+                          data-step="-1"
+                          aria-label="Decrease smart camera quantity"
+                        >
+                          &minus;
+                        </button>
+                        <input
+                          id="qty-smart"
+                          class="qty-input"
+                          type="number"
+                          min="0"
+                          max="999"
+                          step="1"
+                          value="0"
+                          inputmode="numeric"
+                          aria-describedby="qty-smart-desc"
+                        />
+                        <button
+                          type="button"
+                          class="qty-btn"
+                          data-target="smart"
+                          data-step="1"
+                          aria-label="Increase smart camera quantity"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <div id="qty-smart-desc" class="calc-row-note">
+                        Use arrow keys or +/- buttons.
+                      </div>
+                    </div>
+
+                    <div class="calc-row-summary">
+                      <div class="line-price-row">
+                        <span class="line-label">Line total</span>
+                        <span id="smart-total" class="line-value number-animate" data-value="0">$0.00</span>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Compute Nodes -->
                   <div class="calc-row">
                     <div class="calc-row-main">
                       <div class="calc-row-label">Compute Nodes</div>
                       <div class="calc-row-note">
-                        $2,000 each &middot; GPU-ready compute node for edge inference.
+                        $3,500 each &middot; each node supports up to 4 cameras.
                       </div>
-                      <div class="bulk-badge" id="bulk-badge-compute">
-                        <span class="bulk-badge-icon"></span>
-                        <span>Bulk discount activated (5% off this line)</span>
+                      <div class="calc-row-note" id="node-suggestion-label">
+                        Nodes suggested for your camera count: <span id="node-suggested">0</span>
                       </div>
                     </div>
 
                     <div>
-                      <label for="qty-compute" class="sr-only">Quantity of compute nodes</label>
+                      <label for="qty-node" class="sr-only">Quantity of compute nodes</label>
                       <div class="qty-wrapper">
                         <button
                           type="button"
                           class="qty-btn"
-                          data-target="compute"
+                          data-target="node"
                           data-step="-1"
-                          aria-label="Decrease compute node quantity"
+                          aria-label="Decrease node quantity"
                         >
                           &minus;
                         </button>
                         <input
-                          id="qty-compute"
+                          id="qty-node"
                           class="qty-input"
                           type="number"
                           min="0"
@@ -219,155 +331,135 @@
                           step="1"
                           value="0"
                           inputmode="numeric"
-                          aria-describedby="qty-compute-desc"
+                          aria-describedby="qty-node-desc"
                         />
                         <button
                           type="button"
                           class="qty-btn"
-                          data-target="compute"
+                          data-target="node"
                           data-step="1"
-                          aria-label="Increase compute node quantity"
+                          aria-label="Increase node quantity"
                         >
                           +
                         </button>
                       </div>
-                      <div id="qty-compute-desc" class="calc-row-note">
-                        Use arrow keys or +/- buttons.
+                      <div id="qty-node-desc" class="calc-row-note">
+                        Each node supports up to 4 cameras.
+                      </div>
+                      <div class="auto-toggle-row">
+                        <label class="switch-label">
+                          <input type="checkbox" id="auto-nodes" checked />
+                          <span class="switch-visual" aria-hidden="true"></span>
+                          <span class="switch-label-text">Auto-calculate nodes based on cameras</span>
+                        </label>
+                      </div>
+                      <div id="node-auto-toast" class="node-auto-toast" aria-live="polite">
+                        Updated nodes to match camera count.
                       </div>
                     </div>
 
                     <div class="calc-row-summary">
-                      <div class="line-price-row line-subtotal-strike" id="compute-subtotal-row">
-                        <span class="line-label">Line subtotal</span>
-                        <span id="compute-subtotal" class="line-value number-animate" data-value="0">$0.00</span>
-                      </div>
-                      <div class="line-price-row line-discount">
-                        <span class="line-label">Discount</span>
-                        <span id="compute-discount" class="line-value number-animate" data-value="0">-$0.00</span>
-                      </div>
                       <div class="line-price-row">
                         <span class="line-label">Line total</span>
-                        <span id="compute-total" class="line-value number-animate" data-value="0">$0.00</span>
+                        <span id="node-total" class="line-value number-animate" data-value="0">$0.00</span>
                       </div>
-                      <div class="discount-note" id="compute-discount-note">
-                        Discount applied: 5% bulk savings on compute nodes.
-                      </div>
+                      <div class="capacity-warning" id="capacity-warning" aria-live="polite"></div>
                     </div>
                   </div>
 
-                  <!-- Cameras -->
-                  <div class="calc-row">
+                  <!-- Software Add-On -->
+                  <div class="calc-row calc-row-software">
                     <div class="calc-row-main">
-                      <div class="calc-row-label">Cameras</div>
+                      <div class="calc-row-label">Software Add-On</div>
                       <div class="calc-row-note">
-                        $2,500 each &middot; smart security camera for high-fidelity video analytics.
-                      </div>
-                      <div class="bulk-badge" id="bulk-badge-camera">
-                        <span class="bulk-badge-icon"></span>
-                        <span>Bulk discount activated (5% off this line)</span>
+                        Optional &middot; $30/month. Billed monthly.
                       </div>
                     </div>
-
                     <div>
-                      <label for="qty-camera" class="sr-only">Quantity of cameras</label>
-                      <div class="qty-wrapper">
-                        <button
-                          type="button"
-                          class="qty-btn"
-                          data-target="camera"
-                          data-step="-1"
-                          aria-label="Decrease camera quantity"
-                        >
-                          &minus;
-                        </button>
-                        <input
-                          id="qty-camera"
-                          class="qty-input"
-                          type="number"
-                          min="0"
-                          max="999"
-                          step="1"
-                          value="0"
-                          inputmode="numeric"
-                          aria-describedby="qty-camera-desc"
-                        />
-                        <button
-                          type="button"
-                          class="qty-btn"
-                          data-target="camera"
-                          data-step="1"
-                          aria-label="Increase camera quantity"
-                        >
-                          +
-                        </button>
-                      </div>
-                      <div id="qty-camera-desc" class="calc-row-note">
-                        Use arrow keys or +/- buttons.
-                      </div>
-                    </div>
-
-                    <div class="calc-row-summary">
-                      <div class="line-price-row line-subtotal-strike" id="camera-subtotal-row">
-                        <span class="line-label">Line subtotal</span>
-                        <span id="camera-subtotal" class="line-value number-animate" data-value="0">$0.00</span>
-                      </div>
-                      <div class="line-price-row line-discount">
-                        <span class="line-label">Discount</span>
-                        <span id="camera-discount" class="line-value number-animate" data-value="0">-$0.00</span>
-                      </div>
-                      <div class="line-price-row">
-                        <span class="line-label">Line total</span>
-                        <span id="camera-total" class="line-value number-animate" data-value="0">$0.00</span>
-                      </div>
-                      <div class="discount-note" id="camera-discount-note">
-                        Discount applied: 5% bulk savings on cameras.
+                      <label class="software-checkbox-label">
+                        <input type="checkbox" id="software-addon" />
+                        <span class="software-checkbox-box" aria-hidden="true"></span>
+                        <span>Add Software &mdash; <strong>$30/month</strong></span>
+                      </label>
+                      <div class="calc-row-note">
+                        Optional add-on. Billed monthly.
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <p class="calc-footer-note">
-                  Discounts are calculated per line item only and clearly labeled in both the line breakdown and the receipt-style summary.
+                  We keep hardware (one-time) and software (monthly) pricing separate so you always see whats due today vs. ongoing subscription.
                 </p>
               </div>
             </section>
 
             <!-- Right: Receipt -->
-            <aside class="receipt-card" aria-label="Pricing summary and savings">
+            <aside class="receipt-card" aria-label="Pricing summary and capacity">
               <div class="receipt-inner">
                 <header class="receipt-header">
-                  <div class="receipt-title">Receipt &amp; savings</div>
-                  <div class="receipt-tag">
-                    <span aria-hidden="true">✓</span>
-                    <span>Discount applied when visible</span>
+                  <div class="receipt-title">Capacity &amp; pricing summary</div>
+                  <div class="receipt-tag" id="software-tag" hidden>
+                    <span aria-hidden="true">●</span>
+                    <span>Software active &middot; Monthly billing</span>
                   </div>
                 </header>
 
+                <!-- Capacity panel -->
+                <section class="capacity-panel" aria-label="Node capacity overview">
+                  <div class="capacity-row">
+                    <span class="capacity-label">Total cameras</span>
+                    <span id="capacity-cameras" class="capacity-value">0</span>
+                  </div>
+                  <div class="capacity-row">
+                    <span class="capacity-label">Node capacity</span>
+                    <span id="capacity-node-capacity" class="capacity-value">0</span>
+                  </div>
+                  <div class="capacity-status" id="capacity-status" aria-live="polite">
+                    <span class="capacity-pill capacity-pill-idle">No cameras configured yet.</span>
+                  </div>
+                </section>
+
+                <!-- Line items -->
                 <div class="receipt-body" aria-live="polite">
-                  <div class="receipt-line subtotal-strike" id="summary-subtotal-row">
-                    <span class="receipt-line-label">Subtotal before discounts</span>
-                    <span id="summary-subtotal" class="receipt-line-value number-animate" data-value="0">$0.00</span>
+                  <div class="receipt-line">
+                    <span class="receipt-line-label">Standard IP Cameras</span>
+                    <span id="summary-standard" class="receipt-line-value number-animate" data-value="0">$0.00</span>
                   </div>
-                  <div class="receipt-line discount">
-                    <span class="receipt-line-label">Total discount</span>
-                    <span id="summary-discount" class="receipt-line-value number-animate" data-value="0">-$0.00</span>
+                  <div class="receipt-line">
+                    <span class="receipt-line-label">Smart Cameras</span>
+                    <span id="summary-smart" class="receipt-line-value number-animate" data-value="0">$0.00</span>
                   </div>
-                  <div class="receipt-total-row">
-                    <span class="receipt-total-label">Final total</span>
-                    <span id="summary-total" class="receipt-total-value number-animate" data-value="0">$0.00</span>
+                  <div class="receipt-line">
+                    <span class="receipt-line-label">Compute Nodes</span>
+                    <span id="summary-node" class="receipt-line-value number-animate" data-value="0">$0.00</span>
                   </div>
                 </div>
 
-                <div class="receipt-save" aria-live="polite">
-                  <div class="receipt-save-main">
-                    <span class="receipt-save-label">You save</span>
-                    <span id="summary-save" class="receipt-save-value number-animate" data-value="0">$0.00</span>
+                <!-- Totals -->
+                <div class="receipt-totals">
+                  <div class="receipt-total-row">
+                    <span class="receipt-total-label">Hardware total (one-time)</span>
+                    <span id="summary-hardware-total" class="receipt-total-value number-animate" data-value="0">$0.00</span>
                   </div>
-                  <span class="receipt-save-chip">Great deal</span>
+                  <div class="receipt-line receipt-line-software">
+                    <span class="receipt-line-label">Software (monthly)</span>
+                    <span id="summary-software" class="receipt-line-value number-animate" data-value="0">$0.00</span>
+                  </div>
+                  <div class="receipt-grand">
+                    <div>
+                      <div class="receipt-grand-label">Due today (hardware)</div>
+                      <div id="grand-hardware" class="receipt-grand-value number-animate" data-value="0">$0.00</div>
+                    </div>
+                    <div>
+                      <div class="receipt-grand-label">Monthly (software)</div>
+                      <div id="grand-software" class="receipt-grand-value number-animate" data-value="0">$0.00</div>
+                    </div>
+                  </div>
                 </div>
 
                 <p class="receipt-footnote">
-                  If no discount is showing above, you can increase either line above 5 units to activate the bulk discount. The summary will always show the undiscounted subtotal line so you never lose track of the original amount.
+                  Hardware is a one-time purchase. Software, if selected, is billed monthly and shown separately so you can model upfront vs. ongoing spend.
                 </p>
               </div>
             </aside>
@@ -575,10 +667,11 @@
 
   <script>
     (function () {
-      const UNIT_COMPUTE = 2000;
-      const UNIT_CAMERA = 2500;
-      const DISCOUNT_RATE = 0.05;
-      const DISCOUNT_THRESHOLD = 5;
+      const UNIT_NODE = 3500;
+      const UNIT_STANDARD_CAMERA = 250;
+      const UNIT_SMART_CAMERA = 3000;
+      const CAMERAS_PER_NODE = 4;
+      const SOFTWARE_MONTHLY = 30;
 
       const currencyFormatter = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -628,89 +721,149 @@
         animateValue(el, value);
       }
 
+      let lastAutoSuggestedNodes = 0;
+      let autoToastTimeout = null;
+
+      function showNodeAutoToast() {
+        const toast = document.getElementById("node-auto-toast");
+        if (!toast) return;
+        toast.classList.add("active");
+        if (autoToastTimeout) {
+          clearTimeout(autoToastTimeout);
+        }
+        autoToastTimeout = setTimeout(() => {
+          toast.classList.remove("active");
+        }, 1400);
+      }
+
       function syncTotals() {
-        const qtyComputeInput = document.getElementById("qty-compute");
-        const qtyCameraInput = document.getElementById("qty-camera");
+        const qtyStandardInput = document.getElementById("qty-standard");
+        const qtySmartInput = document.getElementById("qty-smart");
+        const qtyNodeInput = document.getElementById("qty-node");
+        const autoNodesToggle = document.getElementById("auto-nodes");
+        const softwareAddon = document.getElementById("software-addon");
 
-        const qtyCompute = clampQty(qtyComputeInput.value);
-        const qtyCamera = clampQty(qtyCameraInput.value);
+        if (!qtyStandardInput || !qtySmartInput || !qtyNodeInput) return;
 
-        if (qtyComputeInput.value !== String(qtyCompute)) {
-          qtyComputeInput.value = qtyCompute;
+        let qtyStandard = clampQty(qtyStandardInput.value);
+        let qtySmart = clampQty(qtySmartInput.value);
+        let qtyNode = clampQty(qtyNodeInput.value);
+
+        if (qtyStandardInput.value !== String(qtyStandard)) {
+          qtyStandardInput.value = qtyStandard;
         }
-        if (qtyCameraInput.value !== String(qtyCamera)) {
-          qtyCameraInput.value = qtyCamera;
-        }
-
-        const computeSubtotal = qtyCompute * UNIT_COMPUTE;
-        const cameraSubtotal = qtyCamera * UNIT_CAMERA;
-
-        const computeDiscount = qtyCompute > DISCOUNT_THRESHOLD ? computeSubtotal * DISCOUNT_RATE : 0;
-        const cameraDiscount = qtyCamera > DISCOUNT_THRESHOLD ? cameraSubtotal * DISCOUNT_RATE : 0;
-
-        const computeTotal = computeSubtotal - computeDiscount;
-        const cameraTotal = cameraSubtotal - cameraDiscount;
-
-        const subtotal = computeSubtotal + cameraSubtotal;
-        const totalDiscount = computeDiscount + cameraDiscount;
-        const finalTotal = subtotal - totalDiscount;
-
-        // Per-line badges and notes
-        const computeBadge = document.getElementById("bulk-badge-compute");
-        const cameraBadge = document.getElementById("bulk-badge-camera");
-        const computeDiscountNote = document.getElementById("compute-discount-note");
-        const cameraDiscountNote = document.getElementById("camera-discount-note");
-
-        if (computeBadge) {
-          computeBadge.classList.toggle("active", computeDiscount > 0);
-        }
-        if (cameraBadge) {
-          cameraBadge.classList.toggle("active", cameraDiscount > 0);
-        }
-        if (computeDiscountNote) {
-          computeDiscountNote.classList.toggle("active", computeDiscount > 0);
-        }
-        if (cameraDiscountNote) {
-          cameraDiscountNote.classList.toggle("active", cameraDiscount > 0);
+        if (qtySmartInput.value !== String(qtySmart)) {
+          qtySmartInput.value = qtySmart;
         }
 
-        // Per-line numbers
-        updateNumber(document.getElementById("compute-subtotal"), computeSubtotal);
-        updateNumber(document.getElementById("compute-discount"), -computeDiscount);
-        updateNumber(document.getElementById("compute-total"), computeTotal);
+        const totalCameras = qtyStandard + qtySmart;
+        const autoEnabled = !!(autoNodesToggle && autoNodesToggle.checked);
 
-        updateNumber(document.getElementById("camera-subtotal"), cameraSubtotal);
-        updateNumber(document.getElementById("camera-discount"), -cameraDiscount);
-        updateNumber(document.getElementById("camera-total"), cameraTotal);
-
-        // Overall summary
-        const summarySubtotalRow = document.getElementById("summary-subtotal-row");
-        if (summarySubtotalRow) {
-          summarySubtotalRow.classList.toggle("subtotal-strike", totalDiscount > 0);
+        const suggestedNodes = totalCameras > 0 ? Math.ceil(totalCameras / CAMERAS_PER_NODE) : 0;
+        const nodeSuggestedEl = document.getElementById("node-suggested");
+        if (nodeSuggestedEl) {
+          nodeSuggestedEl.textContent = String(suggestedNodes);
         }
-        updateNumber(document.getElementById("summary-subtotal"), subtotal);
-        updateNumber(document.getElementById("summary-discount"), -totalDiscount);
-        updateNumber(document.getElementById("summary-total"), finalTotal);
-        updateNumber(document.getElementById("summary-save"), totalDiscount);
 
-        // Hero preview
+        if (autoEnabled && totalCameras > 0) {
+          if (suggestedNodes !== qtyNode) {
+            qtyNode = suggestedNodes;
+            qtyNodeInput.value = qtyNode;
+            if (suggestedNodes !== lastAutoSuggestedNodes) {
+              showNodeAutoToast();
+            }
+            lastAutoSuggestedNodes = suggestedNodes;
+          }
+        } else {
+          // Manual mode or no cameras: just clamp existing node value
+          qtyNode = clampQty(qtyNodeInput.value);
+          if (qtyNodeInput.value !== String(qtyNode)) {
+            qtyNodeInput.value = qtyNode;
+          }
+          lastAutoSuggestedNodes = suggestedNodes;
+        }
+
+        const nodeCapacity = qtyNode * CAMERAS_PER_NODE;
+
+        // Pricing
+        const standardTotal = qtyStandard * UNIT_STANDARD_CAMERA;
+        const smartTotal = qtySmart * UNIT_SMART_CAMERA;
+        const nodeTotal = qtyNode * UNIT_NODE;
+
+        const hardwareTotal = standardTotal + smartTotal + nodeTotal;
+        const softwareMonthly = softwareAddon && softwareAddon.checked ? SOFTWARE_MONTHLY : 0;
+
+        // Capacity panel
+        const capacityCamerasEl = document.getElementById("capacity-cameras");
+        const capacityNodeCapEl = document.getElementById("capacity-node-capacity");
+        const capacityStatusEl = document.getElementById("capacity-status");
+        const capacityWarningEl = document.getElementById("capacity-warning");
+
+        if (capacityCamerasEl) capacityCamerasEl.textContent = String(totalCameras);
+        if (capacityNodeCapEl) capacityNodeCapEl.textContent = String(nodeCapacity);
+
+        if (capacityStatusEl) {
+          capacityStatusEl.className = "capacity-status";
+          if (totalCameras === 0 && qtyNode === 0) {
+            capacityStatusEl.innerHTML = '<span class="capacity-pill capacity-pill-idle">No cameras configured yet.</span>';
+          } else if (nodeCapacity >= totalCameras) {
+            capacityStatusEl.innerHTML = '<span class="capacity-pill capacity-pill-covered">Covered &mdash; nodes can handle your cameras.</span>';
+          } else {
+            capacityStatusEl.innerHTML = '<span class="capacity-pill capacity-pill-warning">Over capacity &mdash; add nodes or reduce cameras.</span>';
+          }
+        }
+
+        if (capacityWarningEl) {
+          if (totalCameras > 0 && nodeCapacity < totalCameras) {
+            const recommended = suggestedNodes;
+            const supported = recommended * CAMERAS_PER_NODE;
+            capacityWarningEl.textContent = `Your camera count exceeds node capacity. Recommended nodes: ${recommended} (supports up to ${supported} cameras).`;
+            capacityWarningEl.classList.add("active");
+          } else {
+            capacityWarningEl.textContent = "";
+            capacityWarningEl.classList.remove("active");
+          }
+        }
+
+        // Line items in receipt
+        updateNumber(document.getElementById("standard-total"), standardTotal);
+        updateNumber(document.getElementById("smart-total"), smartTotal);
+        updateNumber(document.getElementById("node-total"), nodeTotal);
+
+        updateNumber(document.getElementById("summary-standard"), standardTotal);
+        updateNumber(document.getElementById("summary-smart"), smartTotal);
+        updateNumber(document.getElementById("summary-node"), nodeTotal);
+
+        // Totals
+        updateNumber(document.getElementById("summary-hardware-total"), hardwareTotal);
+        updateNumber(document.getElementById("grand-hardware"), hardwareTotal);
+
+        updateNumber(document.getElementById("summary-software"), softwareMonthly);
+        updateNumber(document.getElementById("grand-software"), softwareMonthly);
+
+        // Hero preview (reuse subtotal/total areas for hardware focus)
         const heroSubtotalEl = document.getElementById("hero-subtotal");
         const heroDiscountEl = document.getElementById("hero-discount");
         const heroTotalEl = document.getElementById("hero-total");
         const heroSaveEl = document.getElementById("hero-save");
 
         if (heroSubtotalEl) {
-          const hasDiscount = totalDiscount > 0;
           const row = heroSubtotalEl.closest(".summary-row");
           if (row) {
-            row.classList.toggle("subtotal-strike", hasDiscount);
+            row.classList.remove("subtotal-strike");
           }
         }
 
-        updateNumber(heroSubtotalEl, subtotal);
-        updateNumber(heroDiscountEl, -totalDiscount);
-        updateNumber(heroTotalEl, finalTotal);
-        updateNumber(heroSaveEl, totalDiscount);
+        updateNumber(heroSubtotalEl, hardwareTotal);
+        updateNumber(heroDiscountEl, 0);
+        updateNumber(heroTotalEl, hardwareTotal);
+        updateNumber(heroSaveEl, 0);
+
+        // Software tag
+        const softwareTag = document.getElementById("software-tag");
+        if (softwareTag) {
+          softwareTag.hidden = softwareMonthly === 0;
+        }
       }
 
       function attachQtyControls() {
@@ -720,7 +873,15 @@
             const target = e.currentTarget.getAttribute("data-target");
             const step = parseInt(e.currentTarget.getAttribute("data-step") || "1", 10);
             if (!target) return;
-            const input = document.getElementById(target === "compute" ? "qty-compute" : "qty-camera");
+            let inputId;
+            if (target === "standard") {
+              inputId = "qty-standard";
+            } else if (target === "smart") {
+              inputId = "qty-smart";
+            } else {
+              inputId = "qty-node";
+            }
+            const input = document.getElementById(inputId);
             if (!input) return;
             const current = clampQty(input.value);
             const next = clampQty(current + step);
@@ -729,7 +890,7 @@
           });
         });
 
-        ["qty-compute", "qty-camera"].forEach((id) => {
+        ["qty-standard", "qty-smart", "qty-node"].forEach((id) => {
           const input = document.getElementById(id);
           if (!input) return;
 
@@ -756,6 +917,20 @@
             }
           });
         });
+
+        const autoNodesToggle = document.getElementById("auto-nodes");
+        if (autoNodesToggle) {
+          autoNodesToggle.addEventListener("change", () => {
+            syncTotals();
+          });
+        }
+
+        const softwareAddon = document.getElementById("software-addon");
+        if (softwareAddon) {
+          softwareAddon.addEventListener("change", () => {
+            syncTotals();
+          });
+        }
       }
 
       function initNumberDefaults() {
