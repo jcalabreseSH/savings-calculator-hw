@@ -1,0 +1,20 @@
+{
+  "name": "savings-calculator-hw",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static single-page Sighthound hardware savings calculator",
+  "scripts": {
+    "start": "python3 -m http.server ${PORT:-8000}",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "sighthound",
+    "savings",
+    "calculator",
+    "static-site"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {},
+  "devDependencies": {}
+}

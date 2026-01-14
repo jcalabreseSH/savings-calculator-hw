@@ -91,90 +91,6 @@
       outline-offset: 2px;
     }
 
-    /* Top Nav */
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(16px);
-      background: linear-gradient(to bottom, rgba(243, 244, 255, 0.92), rgba(243, 244, 255, 0.76));
-      border-bottom: 1px solid rgba(226, 228, 240, 0.9);
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px;
-      max-width: var(--max-width);
-      margin: 0 auto;
-    }
-
-    .nav-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      color: var(--color-navy);
-    }
-
-    .nav-logo-mark {
-      width: 28px;
-      height: 28px;
-      border-radius: 10px;
-      background: radial-gradient(circle at 30% 20%, #ffffff, #c7cfec);
-      border: 1px solid rgba(79, 96, 220, 0.45);
-      box-shadow: 0 10px 24px rgba(79, 96, 220, 0.45);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .nav-logo-mark svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      font-size: 0.92rem;
-      color: var(--color-text-muted);
-    }
-
-    .nav-link {
-      position: relative;
-      padding: 4px 0;
-    }
-
-    .nav-link::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0;
-      height: 2px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--color-primary), #7b8bff);
-      transition: width var(--transition-fast);
-    }
-
-    .nav-link:hover::after,
-    .nav-link:focus-visible::after {
-      width: 100%;
-    }
-
-    .nav-cta {
-      display: none;
-    }
-
-    @media (min-width: 768px) {
-      .nav-cta {
-        display: inline-flex;
-      }
-    }
 
     /* Buttons */
     .btn {
@@ -1265,34 +1181,6 @@
 <body>
   <a href="#calculator" class="skip-link">Skip to savings calculator</a>
   <div class="page">
-    <header class="nav">
-      <div class="nav-inner">
-        <a href="#top" class="nav-logo">
-          <span class="nav-logo-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <defs>
-                <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#4f60dc" />
-                  <stop offset="100%" stop-color="#16a34a" />
-                </linearGradient>
-              </defs>
-              <circle cx="12" cy="12" r="9" fill="url(#logoGrad)" />
-              <path d="M7.5 13.5c1.2-1.8 2.4-2.7 4.5-2.7s3.3.9 4.5 2.7" fill="none" stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round" />
-              <circle cx="9" cy="9" r="1.1" fill="#e5e7eb" />
-              <circle cx="15" cy="9" r="1.1" fill="#e5e7eb" />
-            </svg>
-          </span>
-          <span>Sighthound</span>
-        </a>
-        <nav class="nav-links" aria-label="Main navigation">
-          <a href="#hardware" class="nav-link">Hardware</a>
-          <a href="#pricing" class="nav-link">Pricing</a>
-          <a href="#calculator" class="nav-link">Calculator</a>
-          <a href="#contact" class="nav-link">Contact</a>
-          <button class="btn btn-secondary nav-cta">Talk to sales</button>
-        </nav>
-      </div>
-    </header>
 
     <main id="top">
       <!-- Hero -->
