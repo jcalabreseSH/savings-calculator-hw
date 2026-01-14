@@ -1,4 +1,4 @@
-# Sighthound Savings Calculator (Homework Version)
+# Sighthound Savings Calculator (Hardware Version)
 
 This repository contains a static single-page web experience for the Sighthound hardware savings calculator. It is a lightweight HTML/CSS/JavaScript implementation with no build step or backend.
 
