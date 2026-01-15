@@ -365,17 +365,16 @@ h1.hero-title {
 }
 
 .hero-chip {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  padding: 6px 9px;
-  border-radius: 11px;
-  background: rgba(15, 23, 42, 0.88);
-  color: rgba(249, 250, 251, 0.92);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.76rem;
+  position: relative;
+  margin-top: 10px;
+padding: 6px 9px;
+border-radius: 11px;
+    background: rgba(15, 23, 42, 0.88);
+    color: rgba(249, 250, 251, 0.92);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.76rem;
 }
 
 .hero-chip-dot {
