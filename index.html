@@ -179,398 +179,399 @@
             </div>
 
             <div class="comparison-layout">
-              <!-- Current setup -->
-              <section class="compare-panel panel-current" aria-labelledby="current-heading">
-                <header class="panel-header">
-                  <h3 id="current-heading" class="panel-title">Your current setup</h3>
-                  <p class="panel-subtitle">
-                    Approximate what you pay today for cameras, hardware, and software with your existing provider.
-                  </p>
-                </header>
+              <div class="comparison-main">
+                <!-- Current setup -->
+                <section class="compare-panel panel-current" aria-labelledby="current-heading">
+                  <header class="panel-header">
+                    <h3 id="current-heading" class="panel-title">Your current setup</h3>
+                    <p class="panel-subtitle">
+                      Approximate what you pay today for cameras, hardware, and software with your existing provider.
+                    </p>
+                  </header>
 
-                <div class="current-field">
-                  <div class="current-field-label">Current monthly cost</div>
-                  <div class="current-field-main">
-                    <label class="sr-only" for="current-monthly-range">Current monthly cost</label>
-                    <input type="range" id="current-monthly-range" min="0" max="50000" step="100" value="1600" />
-                    <div class="current-monthly-display">
-                      <span id="current-monthly-display">$1,600.00</span>
-                      <span class="current-monthly-suffix">/mo</span>
+                  <div class="current-field">
+                    <div class="current-field-label">Current monthly cost</div>
+                    <div class="current-field-main">
+                      <label class="sr-only" for="current-monthly-range">Current monthly cost</label>
+                      <input type="range" id="current-monthly-range" min="0" max="50000" step="100" value="1600" />
+                      <div class="current-monthly-display">
+                        <span id="current-monthly-display">$1,600.00</span>
+                        <span class="current-monthly-suffix">/mo</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="current-field current-field-inline">
-                  <label class="current-field-label" for="current-monthly-input">Or enter monthly amount</label>
-                  <div class="current-inline-inputs">
-                    <div class="currency-input">
-                      <span class="currency-prefix">$</span>
-                      <input id="current-monthly-input" type="number" min="0" step="50" value="1600" inputmode="decimal" />
+                  <div class="current-field current-field-inline">
+                    <label class="current-field-label" for="current-monthly-input">Or enter monthly amount</label>
+                    <div class="current-inline-inputs">
+                      <div class="currency-input">
+                        <span class="currency-prefix">$</span>
+                        <input id="current-monthly-input" type="number" min="0" step="50" value="1600" inputmode="decimal" />
+                      </div>
+                      <div class="current-inline-helper">We’ll use this as your current recurring spend.</div>
                     </div>
-                    <div class="current-inline-helper">We’ll use this as your current recurring spend.</div>
                   </div>
-                </div>
 
-                <div class="current-field current-field-inline">
-                  <label class="current-field-label" for="current-upfront-input">Current upfront / one-time cost</label>
-                  <div class="current-inline-inputs">
-                    <div class="currency-input">
-                      <span class="currency-prefix">$</span>
-                      <input id="current-upfront-input" type="number" min="0" step="500" value="0" inputmode="decimal" />
+                  <div class="current-field current-field-inline">
+                    <label class="current-field-label" for="current-upfront-input">Current upfront / one-time cost</label>
+                    <div class="current-inline-inputs">
+                      <div class="currency-input">
+                        <span class="currency-prefix">$</span>
+                        <input id="current-upfront-input" type="number" min="0" step="500" value="0" inputmode="decimal" />
+                      </div>
+                      <div class="current-inline-helper">Optional &mdash; leave at $0 if you only pay monthly.</div>
                     </div>
-                    <div class="current-inline-helper">Optional &mdash; leave at $0 if you only pay monthly.</div>
                   </div>
+
+                  <div class="current-summary">
+                    <div class="current-summary-item">
+                      <div class="current-summary-label">Upfront (one-time)</div>
+                      <div id="current-upfront-total" class="current-summary-value number-animate" data-value="0">$0.00</div>
+                    </div>
+                    <div class="current-summary-item">
+                      <div class="current-summary-label">Monthly</div>
+                      <div id="current-monthly-total" class="current-summary-value number-animate" data-value="1600">$1,600.00</div>
+                    </div>
+                    <div class="current-summary-item">
+                      <div class="current-summary-label">Total over 12 months</div>
+                      <div id="current-total-horizon" class="current-summary-value number-animate" data-value="0">$0.00</div>
+                    </div>
+                  </div>
+                </section>
+
+                <div class="vs-divider" aria-hidden="true">
+                  <div class="vs-line"></div>
+                  <div class="vs-badge">VS</div>
+                  <div class="vs-line"></div>
                 </div>
 
-                <div class="current-summary">
-                  <div class="current-summary-item">
-                    <div class="current-summary-label">Upfront (one-time)</div>
-                    <div id="current-upfront-total" class="current-summary-value number-animate" data-value="0">$0.00</div>
-                  </div>
-                  <div class="current-summary-item">
-                    <div class="current-summary-label">Monthly</div>
-                    <div id="current-monthly-total" class="current-summary-value number-animate" data-value="1600">$1,600.00</div>
-                  </div>
-                  <div class="current-summary-item">
-                    <div class="current-summary-label">Total over 12 months</div>
-                    <div id="current-total-horizon" class="current-summary-value number-animate" data-value="0">$0.00</div>
-                  </div>
-                </div>
-              </section>
+                <!-- Sighthound -->
+                <section class="compare-panel panel-sighthound" aria-label="Sighthound estimate">
+                  <header class="panel-header">
+                    <h3 class="panel-title">Sighthound</h3>
+                    <p class="panel-subtitle">
+                      Configure Sighthound cameras, compute nodes, and software with built-in capacity guidance and auto node sizing.
+                    </p>
+                  </header>
 
-              <div class="vs-divider" aria-hidden="true">
-                <div class="vs-line"></div>
-                <div class="vs-badge">VS</div>
-                <div class="vs-line"></div>
+                  <div class="panel-sighthound-body">
+                    <div class="calculator-layout">
+                      <!-- Sighthound inputs -->
+                      <section class="calc-card" aria-label="Sighthound hardware savings calculator">
+                        <div class="calc-card-inner">
+                          <header class="calc-header">
+                            <div>
+                              <h3 class="calc-title">Configure your hardware mix</h3>
+                              <p class="calc-subtitle">
+                                Use the steppers or type a quantity between 0&ndash;999. We’ll suggest the right number of compute nodes based on your camera counts.
+                              </p>
+                            </div>
+                            <div class="calc-chip">
+                              Live &middot; No sign-up required
+                            </div>
+                          </header>
+
+                          <div class="calc-grid" role="group" aria-labelledby="line-items-heading">
+                            <span id="line-items-heading" class="sr-only" aria-hidden="true" hidden>Line item configuration</span>
+
+                            <!-- Standard IP Cameras -->
+                            <div class="calc-row">
+                              <div class="calc-row-main">
+                                <div class="calc-row-label">Standard IP Camera</div>
+                                <div class="calc-row-note">
+                                  $250 each &middot; fixed lens, basic IP connectivity for straightforward coverage.
+                                </div>
+                              </div>
+
+                              <div>
+                                <label for="qty-standard" class="sr-only">Quantity of standard IP cameras</label>
+                                <div class="qty-wrapper">
+                                  <button
+                                    type="button"
+                                    class="qty-btn"
+                                    data-target="standard"
+                                    data-step="-1"
+                                    aria-label="Decrease standard camera quantity"
+                                  >
+                                    &minus;
+                                  </button>
+                                  <input
+                                    id="qty-standard"
+                                    class="qty-input"
+                                    type="number"
+                                    min="0"
+                                    max="999"
+                                    step="1"
+                                    value="0"
+                                    inputmode="numeric"
+                                    aria-describedby="qty-standard-desc"
+                                  />
+                                  <button
+                                    type="button"
+                                    class="qty-btn"
+                                    data-target="standard"
+                                    data-step="1"
+                                    aria-label="Increase standard camera quantity"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                                <div id="qty-standard-desc" class="calc-row-note">
+                                  Use arrow keys or +/- buttons.
+                                </div>
+                              </div>
+
+                              <div class="calc-row-summary">
+                                <div class="line-price-row">
+                                  <span class="line-label">Line total</span>
+                                  <span id="standard-total" class="line-value number-animate" data-value="0">$0.00</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Smart Cameras -->
+                            <div class="calc-row">
+                              <div class="calc-row-main">
+                                <div class="calc-row-label">
+                                  Smart Camera
+                                  <span class="badge-pill-recommended">Recommended</span>
+                                </div>
+                                <div class="calc-row-note">
+                                  $3,000 each &middot; AI-ready, premium edge camera for advanced real-time computer vision.
+                                </div>
+                              </div>
+
+                              <div>
+                                <label for="qty-smart" class="sr-only">Quantity of smart cameras</label>
+                                <div class="qty-wrapper">
+                                  <button
+                                    type="button"
+                                    class="qty-btn"
+                                    data-target="smart"
+                                    data-step="-1"
+                                    aria-label="Decrease smart camera quantity"
+                                  >
+                                    &minus;
+                                  </button>
+                                  <input
+                                    id="qty-smart"
+                                    class="qty-input"
+                                    type="number"
+                                    min="0"
+                                    max="999"
+                                    step="1"
+                                    value="0"
+                                    inputmode="numeric"
+                                    aria-describedby="qty-smart-desc"
+                                  />
+                                  <button
+                                    type="button"
+                                    class="qty-btn"
+                                    data-target="smart"
+                                    data-step="1"
+                                    aria-label="Increase smart camera quantity"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                                <div id="qty-smart-desc" class="calc-row-note">
+                                  Use arrow keys or +/- buttons.
+                                </div>
+                              </div>
+
+                              <div class="calc-row-summary">
+                                <div class="line-price-row">
+                                  <span class="line-label">Line total</span>
+                                  <span id="smart-total" class="line-value number-animate" data-value="0">$0.00</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Compute Nodes -->
+                            <div class="calc-row">
+                              <div class="calc-row-main">
+                                <div class="calc-row-label">Compute Nodes</div>
+                                <div class="calc-row-note">
+                                  $3,500 each &middot; each node supports up to 4 cameras.
+                                </div>
+                                <div class="calc-row-note" id="node-suggestion-label">
+                                  Nodes suggested for your camera count: <span id="node-suggested">0</span>
+                                </div>
+                              </div>
+
+                              <div>
+                                <label for="qty-node" class="sr-only">Quantity of compute nodes</label>
+                                <div class="qty-wrapper">
+                                  <button
+                                    type="button"
+                                    class="qty-btn"
+                                    data-target="node"
+                                    data-step="-1"
+                                    aria-label="Decrease node quantity"
+                                  >
+                                    &minus;
+                                  </button>
+                                  <input
+                                    id="qty-node"
+                                    class="qty-input"
+                                    type="number"
+                                    min="0"
+                                    max="999"
+                                    step="1"
+                                    value="0"
+                                    inputmode="numeric"
+                                    aria-describedby="qty-node-desc"
+                                  />
+                                  <button
+                                    type="button"
+                                    class="qty-btn"
+                                    data-target="node"
+                                    data-step="1"
+                                    aria-label="Increase node quantity"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                                <div id="qty-node-desc" class="calc-row-note">
+                                  Each node supports up to 4 cameras across standard and smart types.
+                                </div>
+                                <div class="auto-toggle-row">
+                                  <label class="switch-label">
+                                    <input type="checkbox" id="auto-nodes" checked />
+                                    <span class="switch-visual" aria-hidden="true"></span>
+                                    <span class="switch-label-text">Auto-calculate nodes based on cameras</span>
+                                  </label>
+                                </div>
+                              </div>
+
+                              <div class="calc-row-summary">
+                                <div class="line-price-row">
+                                  <span class="line-label">Line total</span>
+                                  <span id="node-total" class="line-value number-animate" data-value="0">$0.00</span>
+                                </div>
+                                <div class="capacity-warning" id="capacity-warning" aria-live="polite"></div>
+                              </div>
+                            </div>
+
+                            <!-- Software Add-On -->
+                            <div class="calc-row calc-row-software">
+                              <div class="calc-row-main">
+                                <div class="calc-row-label">Software add-on &mdash; $30/month per camera</div>
+                                <div class="calc-row-note">
+                                  Optional &middot; billed monthly per camera and shown separately from one-time hardware.
+                                </div>
+                              </div>
+                              <div>
+                                <label class="software-checkbox-label">
+                                  <input type="checkbox" id="software-addon" />
+                                  <span class="software-checkbox-box" aria-hidden="true"></span>
+                                  <span>Enable software for all cameras</span>
+                                </label>
+                                <div class="calc-row-note">
+                                  Billed monthly per camera. Turn off if you only want hardware in this estimate.
+                                </div>
+                              </div>
+                              <div class="calc-row-summary"></div>
+                            </div>
+                          </div>
+
+                          <p class="calc-footer-note">
+                            We keep hardware (one-time) and software (monthly, per camera) pricing separate so you always see what’s due today vs. ongoing subscription.
+                          </p>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </section>
               </div>
 
-              <!-- Sighthound -->
-              <section class="compare-panel panel-sighthound" aria-label="Sighthound estimate">
-                <header class="panel-header">
-                  <h3 class="panel-title">Sighthound</h3>
-                  <p class="panel-subtitle">
-                    Configure Sighthound cameras, compute nodes, and software with built-in capacity guidance and auto node sizing.
-                  </p>
-                </header>
+              <aside class="receipt-card receipt-card-sticky" aria-label="Pricing summary and capacity">
+                <div class="receipt-inner">
+                  <header class="receipt-header">
+                    <div class="receipt-title">Capacity &amp; pricing summary</div>
+                    <div class="receipt-tag" id="software-tag" hidden>
+                      <span aria-hidden="true">●</span>
+                      <span>Software active &middot; Monthly billing</span>
+                    </div>
+                  </header>
 
-                <div class="panel-sighthound-body">
-                  <div class="calculator-layout">
-                    <!-- Left: Inputs -->
-                    <section class="calc-card" aria-label="Sighthound hardware savings calculator">
-                      <div class="calc-card-inner">
-                        <header class="calc-header">
-                          <div>
-                            <h3 class="calc-title">Configure your hardware mix</h3>
-                            <p class="calc-subtitle">
-                              Use the steppers or type a quantity between 0&ndash;999. We’ll suggest the right number of compute nodes based on your camera counts.
-                            </p>
-                          </div>
-                          <div class="calc-chip">
-                            Live &middot; No sign-up required
-                          </div>
-                        </header>
+                  <!-- Capacity panel -->
+                  <section class="capacity-panel" aria-label="Node capacity overview">
+                    <div class="capacity-row">
+                      <span class="capacity-label">Total cameras</span>
+                      <span id="capacity-cameras" class="capacity-value">0</span>
+                    </div>
+                    <div class="capacity-row">
+                      <span class="capacity-label">Node capacity</span>
+                      <span id="capacity-node-capacity" class="capacity-value">0</span>
+                    </div>
+                    <div class="capacity-status" id="capacity-status" aria-live="polite">
+                      <span class="capacity-pill capacity-pill-idle">No cameras configured yet.</span>
+                    </div>
+                  </section>
 
-                        <div class="calc-grid" role="group" aria-labelledby="line-items-heading">
-                          <span id="line-items-heading" class="sr-only" aria-hidden="true" hidden>Line item configuration</span>
-
-                          <!-- Standard IP Cameras -->
-                          <div class="calc-row">
-                            <div class="calc-row-main">
-                              <div class="calc-row-label">Standard IP Camera</div>
-                              <div class="calc-row-note">
-                                $250 each &middot; fixed lens, basic IP connectivity for straightforward coverage.
-                              </div>
-                            </div>
-
-                            <div>
-                              <label for="qty-standard" class="sr-only">Quantity of standard IP cameras</label>
-                              <div class="qty-wrapper">
-                                <button
-                                  type="button"
-                                  class="qty-btn"
-                                  data-target="standard"
-                                  data-step="-1"
-                                  aria-label="Decrease standard camera quantity"
-                                >
-                                  &minus;
-                                </button>
-                                <input
-                                  id="qty-standard"
-                                  class="qty-input"
-                                  type="number"
-                                  min="0"
-                                  max="999"
-                                  step="1"
-                                  value="0"
-                                  inputmode="numeric"
-                                  aria-describedby="qty-standard-desc"
-                                />
-                                <button
-                                  type="button"
-                                  class="qty-btn"
-                                  data-target="standard"
-                                  data-step="1"
-                                  aria-label="Increase standard camera quantity"
-                                >
-                                  +
-                                </button>
-                              </div>
-                              <div id="qty-standard-desc" class="calc-row-note">
-                                Use arrow keys or +/- buttons.
-                              </div>
-                            </div>
-
-                            <div class="calc-row-summary">
-                              <div class="line-price-row">
-                                <span class="line-label">Line total</span>
-                                <span id="standard-total" class="line-value number-animate" data-value="0">$0.00</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- Smart Cameras -->
-                          <div class="calc-row">
-                            <div class="calc-row-main">
-                              <div class="calc-row-label">
-                                Smart Camera
-                                <span class="badge-pill-recommended">Recommended</span>
-                              </div>
-                              <div class="calc-row-note">
-                                $3,000 each &middot; AI-ready, premium edge camera for advanced real-time computer vision.
-                              </div>
-                            </div>
-
-                            <div>
-                              <label for="qty-smart" class="sr-only">Quantity of smart cameras</label>
-                              <div class="qty-wrapper">
-                                <button
-                                  type="button"
-                                  class="qty-btn"
-                                  data-target="smart"
-                                  data-step="-1"
-                                  aria-label="Decrease smart camera quantity"
-                                >
-                                  &minus;
-                                </button>
-                                <input
-                                  id="qty-smart"
-                                  class="qty-input"
-                                  type="number"
-                                  min="0"
-                                  max="999"
-                                  step="1"
-                                  value="0"
-                                  inputmode="numeric"
-                                  aria-describedby="qty-smart-desc"
-                                />
-                                <button
-                                  type="button"
-                                  class="qty-btn"
-                                  data-target="smart"
-                                  data-step="1"
-                                  aria-label="Increase smart camera quantity"
-                                >
-                                  +
-                                </button>
-                              </div>
-                              <div id="qty-smart-desc" class="calc-row-note">
-                                Use arrow keys or +/- buttons.
-                              </div>
-                            </div>
-
-                            <div class="calc-row-summary">
-                              <div class="line-price-row">
-                                <span class="line-label">Line total</span>
-                                <span id="smart-total" class="line-value number-animate" data-value="0">$0.00</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- Compute Nodes -->
-                          <div class="calc-row">
-                            <div class="calc-row-main">
-                              <div class="calc-row-label">Compute Nodes</div>
-                              <div class="calc-row-note">
-                                $3,500 each &middot; each node supports up to 4 cameras.
-                              </div>
-                              <div class="calc-row-note" id="node-suggestion-label">
-                                Nodes suggested for your camera count: <span id="node-suggested">0</span>
-                              </div>
-                            </div>
-
-                            <div>
-                              <label for="qty-node" class="sr-only">Quantity of compute nodes</label>
-                              <div class="qty-wrapper">
-                                <button
-                                  type="button"
-                                  class="qty-btn"
-                                  data-target="node"
-                                  data-step="-1"
-                                  aria-label="Decrease node quantity"
-                                >
-                                  &minus;
-                                </button>
-                                <input
-                                  id="qty-node"
-                                  class="qty-input"
-                                  type="number"
-                                  min="0"
-                                  max="999"
-                                  step="1"
-                                  value="0"
-                                  inputmode="numeric"
-                                  aria-describedby="qty-node-desc"
-                                />
-                                <button
-                                  type="button"
-                                  class="qty-btn"
-                                  data-target="node"
-                                  data-step="1"
-                                  aria-label="Increase node quantity"
-                                >
-                                  +
-                                </button>
-                              </div>
-                              <div id="qty-node-desc" class="calc-row-note">
-                                Each node supports up to 4 cameras across standard and smart types.
-                              </div>
-                              <div class="auto-toggle-row">
-                                <label class="switch-label">
-                                  <input type="checkbox" id="auto-nodes" checked />
-                                  <span class="switch-visual" aria-hidden="true"></span>
-                                  <span class="switch-label-text">Auto-calculate nodes based on cameras</span>
-                                </label>
-                              </div>
-                            </div>
-
-                            <div class="calc-row-summary">
-                              <div class="line-price-row">
-                                <span class="line-label">Line total</span>
-                                <span id="node-total" class="line-value number-animate" data-value="0">$0.00</span>
-                              </div>
-                              <div class="capacity-warning" id="capacity-warning" aria-live="polite"></div>
-                            </div>
-                          </div>
-
-                          <!-- Software Add-On -->
-                          <div class="calc-row calc-row-software">
-                            <div class="calc-row-main">
-                              <div class="calc-row-label">Software add-on &mdash; $30/month per camera</div>
-                              <div class="calc-row-note">
-                                Optional &middot; billed monthly per camera and shown separately from one-time hardware.
-                              </div>
-                            </div>
-                            <div>
-                              <label class="software-checkbox-label">
-                                <input type="checkbox" id="software-addon" />
-                                <span class="software-checkbox-box" aria-hidden="true"></span>
-                                <span>Enable software for all cameras</span>
-                              </label>
-                              <div class="calc-row-note">
-                                Billed monthly per camera. Turn off if you only want hardware in this estimate.
-                              </div>
-                            </div>
-                            <div class="calc-row-summary"></div>
-                          </div>
-                        </div>
-
-                        <p class="calc-footer-note">
-                          We keep hardware (one-time) and software (monthly, per camera) pricing separate so you always see what’s due today vs. ongoing subscription.
-                        </p>
-                      </div>
-                    </section>
-
-                    <!-- Right: Receipt -->
-                    <aside class="receipt-card" aria-label="Pricing summary and capacity">
-                      <div class="receipt-inner">
-                        <header class="receipt-header">
-                          <div class="receipt-title">Capacity &amp; pricing summary</div>
-                          <div class="receipt-tag" id="software-tag" hidden>
-                            <span aria-hidden="true">●</span>
-                            <span>Software active &middot; Monthly billing</span>
-                          </div>
-                        </header>
-
-                        <!-- Capacity panel -->
-                        <section class="capacity-panel" aria-label="Node capacity overview">
-                          <div class="capacity-row">
-                            <span class="capacity-label">Total cameras</span>
-                            <span id="capacity-cameras" class="capacity-value">0</span>
-                          </div>
-                          <div class="capacity-row">
-                            <span class="capacity-label">Node capacity</span>
-                            <span id="capacity-node-capacity" class="capacity-value">0</span>
-                          </div>
-                          <div class="capacity-status" id="capacity-status" aria-live="polite">
-                            <span class="capacity-pill capacity-pill-idle">No cameras configured yet.</span>
-                          </div>
-                        </section>
-
-                        <!-- Line items -->
-                        <div class="receipt-body" aria-live="polite">
-                          <div class="receipt-line">
-                            <span class="receipt-line-label">Standard IP Cameras</span>
-                            <span id="summary-standard" class="receipt-line-value number-animate" data-value="0">$0.00</span>
-                          </div>
-                          <div class="receipt-line">
-                            <span class="receipt-line-label">Smart Cameras</span>
-                            <span id="summary-smart" class="receipt-line-value number-animate" data-value="0">$0.00</span>
-                          </div>
-                          <div class="receipt-line">
-                            <span class="receipt-line-label">Compute Nodes</span>
-                            <span id="summary-node" class="receipt-line-value number-animate" data-value="0">$0.00</span>
-                          </div>
-                        </div>
-
-                        <!-- Totals -->
-                        <div class="receipt-totals">
-                          <div class="receipt-total-row">
-                            <span class="receipt-total-label">Hardware total (one-time)</span>
-                            <span id="summary-hardware-total" class="receipt-total-value number-animate" data-value="0">$0.00</span>
-                          </div>
-                          <div class="receipt-line receipt-line-software">
-                            <span class="receipt-line-label">Software add-on (monthly)</span>
-                            <span id="summary-software" class="receipt-line-value number-animate" data-value="0">$0.00</span>
-                          </div>
-                          <div class="receipt-total-row receipt-total-over">
-                            <span class="receipt-total-label">Total over 12 months</span>
-                            <span id="summary-total-horizon" class="receipt-total-value number-animate" data-value="0">$0.00</span>
-                          </div>
-                          <div class="receipt-grand">
-                            <div>
-                              <div class="receipt-grand-label">Due today (hardware)</div>
-                              <div id="grand-hardware" class="receipt-grand-value number-animate" data-value="0">$0.00</div>
-                            </div>
-                            <div>
-                              <div class="receipt-grand-label">Monthly (software)</div>
-                              <div id="grand-software" class="receipt-grand-value number-animate" data-value="0">$0.00</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <p class="receipt-footnote">
-                          Hardware is a one-time purchase. Software, if selected, is billed monthly per camera and shown separately so you can model upfront vs. ongoing spend and total cost of ownership.
-                        </p>
-                      </div>
-
-                      <!-- Savings highlight -->
-                      <section class="savings-card savings-neutral" id="savings-card" aria-live="polite">
-                        <div class="savings-label-row">
-                          <span id="savings-label" class="savings-label">You save</span>
-                          <span class="savings-horizon-label">over 12 months</span>
-                        </div>
-                        <div id="savings-amount" class="savings-amount number-animate" data-value="0">$0.00</div>
-                        <p id="savings-subcopy" class="savings-subcopy">
-                          Over 12 months compared to your current provider, based on the inputs above.
-                        </p>
-                        <p id="savings-monthly-detail" class="savings-monthly-detail">
-                          Adjust camera counts, nodes, software, or timeframe to explore different scenarios.
-                        </p>
-                      </section>
-                    </aside>
+                  <!-- Line items -->
+                  <div class="receipt-body" aria-live="polite">
+                    <div class="receipt-line">
+                      <span class="receipt-line-label">Standard IP Cameras</span>
+                      <span id="summary-standard" class="receipt-line-value number-animate" data-value="0">$0.00</span>
+                    </div>
+                    <div class="receipt-line">
+                      <span class="receipt-line-label">Smart Cameras</span>
+                      <span id="summary-smart" class="receipt-line-value number-animate" data-value="0">$0.00</span>
+                    </div>
+                    <div class="receipt-line">
+                      <span class="receipt-line-label">Compute Nodes</span>
+                      <span id="summary-node" class="receipt-line-value number-animate" data-value="0">$0.00</span>
+                    </div>
                   </div>
+
+                  <!-- Totals -->
+                  <div class="receipt-totals">
+                    <div class="receipt-total-row">
+                      <span class="receipt-total-label">Hardware total (one-time)</span>
+                      <span id="summary-hardware-total" class="receipt-total-value number-animate" data-value="0">$0.00</span>
+                    </div>
+                    <div class="receipt-line receipt-line-software">
+                      <span class="receipt-line-label">Software add-on (monthly)</span>
+                      <span id="summary-software" class="receipt-line-value number-animate" data-value="0">$0.00</span>
+                    </div>
+                    <div class="receipt-total-row receipt-total-over">
+                      <span class="receipt-total-label">Total over 12 months</span>
+                      <span id="summary-total-horizon" class="receipt-total-value number-animate" data-value="0">$0.00</span>
+                    </div>
+                    <div class="receipt-grand">
+                      <div>
+                        <div class="receipt-grand-label">Due today (hardware)</div>
+                        <div id="grand-hardware" class="receipt-grand-value number-animate" data-value="0">$0.00</div>
+                      </div>
+                      <div>
+                        <div class="receipt-grand-label">Monthly (software)</div>
+                        <div id="grand-software" class="receipt-grand-value number-animate" data-value="0">$0.00</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="receipt-footnote">
+                    Hardware is a one-time purchase. Software, if selected, is billed monthly per camera and shown separately so you can model upfront vs. ongoing spend and total cost of ownership.
+                  </p>
                 </div>
-              </section>
+
+                <!-- Savings highlight -->
+                <section class="savings-card savings-neutral" id="savings-card" aria-live="polite">
+                  <div class="savings-label-row">
+                    <span id="savings-label" class="savings-label">You save</span>
+                    <span class="savings-horizon-label">over 12 months</span>
+                  </div>
+                  <div id="savings-amount" class="savings-amount number-animate" data-value="0">$0.00</div>
+                  <p id="savings-subcopy" class="savings-subcopy">
+                    Over 12 months compared to your current provider, based on the inputs above.
+                  </p>
+                  <p id="savings-monthly-detail" class="savings-monthly-detail">
+                    Adjust camera counts, nodes, software, or timeframe to explore different scenarios.
+                  </p>
+                </section>
+              </aside>
             </div>
           </div>
         </div>
